@@ -26,6 +26,13 @@ pipeline {
         
         
         stage('Terraform plan') {
+      
+            when {
+                not {
+                    equals expected: true, actual: params.destroy
+                }
+            }
+            
             steps {
               sh """
                         echo "Generating the plan"
@@ -33,7 +40,14 @@ pipeline {
                         """
             }
         }
+        
             stage('Terraform apply') {
+            
+             when {
+                not {
+                    equals expected: true, actual: params.destroy
+                }
+            }
               
             steps {
                 
@@ -45,6 +59,11 @@ pipeline {
                 }
                 
             stage('Terraform destroy') {
+            
+            when {
+                equals expected: true, actual: params.destroy
+            }            
+            
             steps {
             
                         sh """
