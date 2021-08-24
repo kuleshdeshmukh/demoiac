@@ -20,9 +20,17 @@ pipeline {
             }
         }
         
+        
+        stage('Terraform plan') {
+            steps {
+              sh """
+                        echo "Generating the plan"
+                        terraform plan -auto-approve -var "region=$region" -var "zone_id=$zone_id" -var "vpc_name=$vpc_name" -var "subnet=$subnet" -var "image_id=$image_id" -var "vmname=$vmname" -var "vmsize=$vmsize" -var "keyname=$keyname" -var "access_key=$access_key" -var "secret_key=$secret_key"
+                        """
+            }
+        }
             stage('Terraform apply') {
               
-
             steps {
                 
                         sh """
@@ -31,6 +39,17 @@ pipeline {
                         """
                                 }
                 }
+                
+            stage('Terraform destroy') {
+            steps {
+            
+                        sh """
+                        echo "Destroying the plan"
+                        terraform destroy -auto-approve -var "region=$region" -var "zone_id=$zone_id" -var "vpc_name=$vpc_name" -var "subnet=$subnet" -var "image_id=$image_id" -var "vmname=$vmname" -var "vmsize=$vmsize" -var "keyname=$keyname" -var "access_key=$access_key" -var "secret_key=$secret_key"
+                        """
+              
+            }
+        }
                 
         }
     }
