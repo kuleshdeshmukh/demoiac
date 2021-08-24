@@ -1,11 +1,7 @@
 pipeline {
     agent any
     
-    environment {
-        ALICLOUD_ACCESS_KEY     = credentials('ALICLOUD_ACCESS_KEY')
-        ALICLOUD_SECRET_KEY = credentials('ALICLOUD_SECRET_KEY')
-    }
-    
+        
     tools {
     terraform 'terraform'
     }
@@ -26,8 +22,7 @@ pipeline {
             steps {
               sh """
                         echo "Initializing the workspace"
-                        sh 'terraform workspace select ${environment} || terraform workspace new ${environment}'
-                        terraform init
+                        terraform init -backend-config="access_key=${access_key}" -backend-config="secret_key=${secret_key}"
                         """
               
             }
