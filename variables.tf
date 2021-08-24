@@ -1,10 +1,12 @@
 variable "access_key" {
   description = "Access Key Details for Ali Cloud"
+  sensitive   = true
 
 }
 
 variable "secret_key" {
   description = "Access Secret Key Details foe Ali Cloud"
+  sensitive   = true
 
 }
 
