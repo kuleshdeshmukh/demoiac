@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    tools {
+    terraform 'terraform'
+}
+    
+
+    stages {
+      
+       stage('Git Checkout') {
+            steps {
+               git branch: 'main', url: 'https://github.ibm.com/deshmuk1/demoiac.git'
+            }
+        }
+        
+        
+        stage('Terraform init') {
+            steps {
+              sh 'terraform init'
+            }
+        }
+        
+            stage('Terraform apply') {
+              
+
+            steps {
+                
+                        sh """
+                        echo "Applying the plan"
+                        terraform apply -auto-approve -var "region=$region" -var "zone_id=$zone_id" -var "vpc_name=$vpc_name" -var "subnet=$subnet" -var "image_id=$image_id" -var "vmname=$vmname" -var "vmsize=$vmsize" -var "keyname=$keyname" -var "access_key=$access_key" -var "secret_key=$secret_key"
+                        """
+                                }
+                }
+                
+        }
+    }
