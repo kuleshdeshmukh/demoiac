@@ -24,3 +24,4 @@ resource "alicloud_instance" "instance" {
   key_name          = var.keyname
 
 }
+#test
